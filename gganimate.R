@@ -10,10 +10,10 @@ gapminder <- read.csv("~/Downloads/Advanced ggplot2/gapminder_data.txt")
 
 # traditional plot:
 gapminder %>%
-	ggplot(aes(x = pop, y = gdpPercap, color = year)) +
+	ggplot(aes(x = gdpPercap, y = lifeExp, color = year)) +
 	geom_point() +
 	scale_x_log10(labels = scales::comma, guide=guide_axis(n.dodge=2)) +
-	scale_y_log10(labels = scales::comma) +
+	# scale_y_log10(labels = scales::comma) +
 	scale_color_viridis_c()
 
 # make a cursory animation with year a transition variable:
@@ -22,11 +22,12 @@ anim <- gapminder %>%
 	geom_point() +
 	geom_smooth(method = "lm", formula = "y~x", se=F) +
 	scale_x_log10(labels = scales::comma, guide=guide_axis(n.dodge=2)) +
-	scale_y_log10() +
+	# scale_y_log10() +
 	scale_color_viridis_c() +
 	transition_states(year,
 			  transition_length = 2,
 			  state_length = 1)
+anim
 
 anim +
 	ease_aes('cubic-in-out') +

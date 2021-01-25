@@ -54,6 +54,7 @@ gapminder %>%
   ggplot(aes(x = gdpPercap, y = lifeExp)) +
   geom_point(aes(color=continent)) +
   scale_x_log10() + 
+  scale_color_viridis_d() + 
   geom_smooth(method="lm", formula="y~x", se=F, color="black") +
   labs(x="Country GDP per capita", y="Average life expectancy") +
   geom_text_repel(aes(label = country)) # awful!
@@ -74,7 +75,8 @@ p_lower <- gapminder %>%
   labs(x="Country GDP per capita", y="Average life expectancy") +
   geom_rect(aes(xmin = 300, xmax = 1000, ymin = 30, ymax = 45), color="red", fill=NA) +
   geom_text_repel(data=lower_zoom, aes(label = country, color=continent)) +
-  guides(color=FALSE)
+  guides(color=FALSE) # turns off the legend
+p_lower
 
 # upper zoom:
 upper_zoom <- gapminder %>%
@@ -92,7 +94,7 @@ p_upper <- gapminder %>%
   geom_rect(aes(xmin = 20000, xmax = 60000, ymin = 65, ymax = 80), color="blue", fill=NA) +
   geom_text_repel(data=upper_zoom, aes(label = country, color=continent)) +
   guides(color=FALSE)
-
+p_upper
 
 # lastly, add rectangles to the un-zoomed plot:
 p_all <- gapminder %>%
@@ -104,12 +106,13 @@ p_all <- gapminder %>%
   labs(x="Country GDP per capita", y="Average life expectancy", color="Continent") + 
   geom_rect(aes(xmin = 300, xmax = 1000, ymin = 30, ymax = 45), color="red", fill=NA) +
   geom_rect(aes(xmin = 20000, xmax = 60000, ymin = 65, ymax = 80), color="blue", fill=NA)
+p_all
 
 # lastly, plot together:
 
 # Patchwork allows rapid plotting using simple symbols:
 require(patchwork)
-p_all / (p_lower | p_upper)
+(p_all / p_lower) | p_upper
 
 # For more advanced plotting features, try cowplot!
 require(cowplot)
